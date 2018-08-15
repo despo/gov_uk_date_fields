@@ -84,8 +84,5 @@ module GovUkDateFields
       assert_equal  nil, fd.date
       assert_true fd.valid?, "fd.valid?"
     end
-
-
-
   end
 end

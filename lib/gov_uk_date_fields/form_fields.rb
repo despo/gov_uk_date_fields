@@ -29,6 +29,7 @@ module GovUkDateFields
       @fieldset_id        = @options[:id]
       @error_messages     = @options[:error_messages]
       @hint_id            = @fieldset_id.nil? ? "#{@attribute}-hint" : "#{@fieldset_id}-hint"
+      @error_id           = @fieldset_id.nil? ? "#{@attribute}-error" : "#{@fieldset_id}-error"
       @today_button       = @options[:today_button] || false
       parse_options
     end
@@ -64,26 +65,34 @@ module GovUkDateFields
     end
 
     def generate_start_fieldset
+      fieldset_class = "govuk-fieldset"
       %Q|
-        #{generate_fieldset_tag}
-          #{generate_legend_tag}
-            <span class="form-label-bold">#{@options[:legend_text]}</span>
-            <span class="form-hint" id="#{@hint_id}">#{@form_hint_text}</span>
-            #{generate_error_message}
+        #{generate_fieldset_tag(fieldset_class)}
+          #{generate_legend_tag(fieldset_class)}
+            <span class="govuk-label">#{@options[:legend_text]}</span>
           </legend>
-          <div class="form-date">
+          <span class="govuk-hint" id="#{@hint_id}">#{@form_hint_text}</span>
+          #{generate_error_message}
+        #{generate_input_field_beginning}
       |
     end
 
-    def generate_fieldset_tag
-      css_class = "form-group gov_uk_date"
-      css_class += " form-group-error" if error_for_attr?
+    def generate_input_field_beginning
+      result = %Q|<div class="govuk-date-input"|
+      result += %Q| id="#{@fieldset_id}"| unless @fieldset_id.nil?
+      result += ">"
+    end
+
+    def generate_fieldset_tag(fieldset_class)
+      css_class = "govuk-form-group"
+      css_class += " govuk-form-group--error" if error_for_attr?
+
+      aria = @hint_id
+      aria << " #{@error_id}" if error_for_attr?
 
       result = %Q|
-                <div class="#{css_class}"|
-      result += %Q| id="#{@fieldset_id}"| unless  @fieldset_id.nil?
-      result += ">"
-      result += %Q| <fieldset|
+                <div class="#{css_class}">|
+      result += %Q| <fieldset class="#{fieldset_class}" ariadescribedby="#{aria}" role="group"|
       result += ">"
       result
     end
@@ -92,23 +101,23 @@ module GovUkDateFields
       "</div></fieldset></div>"
     end
 
-    def generate_legend_tag
+    def generate_legend_tag(fieldset_class)
       if @options.key?(:legend_class)
-        %Q|<legend class="#{@options[:legend_class]}">|
+        %Q|<legend class="#{fieldset_class}__legend #{@options[:legend_class]}">|
       else
-        "<legend>"
+        %Q|<legend class="#{fieldset_class}__legend">|
       end
     end
 
     def generate_error_message
       result = ''
       if error_for_attr?
-        result = "<ul>"
+        result = '<ul class="govuk-list">'
         if @error_messages.nil?
           @error_messages = @object.errors[@attribute]
         end
         @error_messages.each do |message|
-          result += %Q|<li><span class="error-message">#{message}</span></li>|
+          result += %Q|<li><span class="govuk-error-message">#{message}</span></li>|
         end
         result += "</ul>"
       end
@@ -144,37 +153,40 @@ module GovUkDateFields
     end
 
     def generate_day_input_field(day_value)
-      css_class = "form-control"
-      css_class += " form-control-error" if error_for_attr?
-
+      input_css_class = 'govuk-input govuk-date-input__input govuk-input--width-2'
+      input_css_class +=  ' govuk-input--error' if error_for_attr?
       result = %Q|
-          <div class="form-group form-group-day">
-            <label for="#{html_id(:day)}">Day</label>
-            <input class="#{css_class}" id="#{html_id(:day)}" name="#{html_name(:day)}" type="number" pattern="\\d*" min="0" max="31" aria-describedby="#{@hint_id}" value="#{day_value}">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="#{html_id(:day)}">Day</label>
+            <input class="#{input_css_class}" id="#{html_id(:day)}" name="#{html_name(:day)}" type="number" pattern="\\d*" min="0" max="31" aria-describedby="#{@hint_id}" value="#{day_value}">
           </div>
+        </div>
       |
     end
 
     def generate_month_input_field(month_value)
-      css_class = "form-control"
-      css_class += " form-control-error" if error_for_attr?
-
+      input_css_class = 'govuk-input govuk-date-input__input govuk-input--width-2'
+      input_css_class +=  ' govuk-input--error' if error_for_attr?
       result = %Q|
-        <div class="form-group form-group-month">
-          <label for="#{html_id(:month)}">Month</label>
-          <input class="#{css_class}" id="#{html_id(:month)}" name="#{html_name(:month)}" type="number" pattern="\\d*" min="0" max="12" value="#{month_value}">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label for="#{html_id(:month)}">Month</label>
+            <input class="#{input_css_class}" id="#{html_id(:month)}" name="#{html_name(:month)}" type="number" pattern="\\d*" min="0" max="12" value="#{month_value}">
+          </div>
         </div>
       |
     end
 
     def generate_year_input_field(year_value)
-      css_class = "form-control"
-      css_class += " form-control-error" if error_for_attr?
-
+      input_css_class = 'govuk-input govuk-date-input__input govuk-input--width-4'
+      input_css_class +=  ' govuk-input--error' if error_for_attr?
       result = %Q|
-        <div class="form-group form-group-year">
-          <label for="#{html_id(:year)}">Year</label>
-          <input class="#{css_class}" id="#{html_id(:year)}" name="#{html_name(:year)}" type="number" pattern="\\d*" min="0" max="2100" value="#{year_value}">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="#{html_id(:year)}">Year</label>
+            <input class="#{input_css_class}" id="#{html_id(:year)}" name="#{html_name(:year)}" type="number" pattern="\\d*" min="0" max="2100" value="#{year_value}">
+          </div>
         </div>
       |
     end
@@ -208,7 +220,7 @@ module GovUkDateFields
     end
 
     def html_id(date_segment)
-      brackets2underscore(html_name(date_segment))
+      brackets2underscore(html_name(date_segment)).strip
     end
 
     def html_name(date_segment)

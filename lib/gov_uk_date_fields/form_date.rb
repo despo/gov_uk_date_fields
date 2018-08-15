@@ -6,7 +6,7 @@ module GovUkDateFields
   class FormDate
 
     attr_accessor :dd, :mm, :yyyy, :date, :temp
-    
+
     # This method cannot be called directly: use .new_from_date or .new_from_params
     def initialize(dd, mm, yyyy, date = nil)
      @dd            = dd
@@ -15,7 +15,7 @@ module GovUkDateFields
      @date          = date
      @valid         = date.nil? ? validate_date : true
     end
-  
+
     # Creates a FormDate object from the date, and writes it to @_<attr_name>
     # on the object, and updates the attr[<attr_name>] with the real date object
     #
@@ -60,10 +60,10 @@ module GovUkDateFields
     end
 
 
-    # Creates a FormDate object from the params, and writes it to the instance variable @_<attr_name> 
+    # Creates a FormDate object from the params, and writes it to the instance variable @_<attr_name>
     # on the object, and updates the attr[attr_name] with the real date object
     #
-    # If the dob_dd, dob_mm, dob_yy are not in the params hash, or if they are all blank, the object is 
+    # If the dob_dd, dob_mm, dob_yy are not in the params hash, or if they are all blank, the object is
     # not updated.
     #
     # def self.set_from_params(object, attr_name, params)
@@ -79,7 +79,7 @@ module GovUkDateFields
 
     private_class_method :new
 
-    private 
+    private
 
 
     def transfer_temp_fields_to_live
@@ -92,7 +92,7 @@ module GovUkDateFields
       attr_missing_in_params?(attr_name, params)  || all_blanks_in_params?(attr_name, params)
     end
 
-    def self.attr_missing_in_params?(attr_name, params) 
+    def self.attr_missing_in_params?(attr_name, params)
       params["#{attr_name}_dd"].nil? &&  params["#{attr_name}_mm"].nil? &&  params["#{attr_name}_yyyy"].nil?
     end
 

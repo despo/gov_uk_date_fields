@@ -60,7 +60,7 @@ class GovUkDateFieldsTest < ActiveSupport::TestCase
 
   test 'fieldset output with today button with css class applied' do
     date_fields = GovUkDateFields::FormFields.new(@form_builder, :employee, :joined, {legend_text: 'Joining date', id: 'employee_date_joined', today_button: {class: 'today-button-class'} } )
-    assert_html_equal(date_fields.raw_output, expected_fieldset_output_with_syled_today_button)
+    assert_html_equal(date_fields.raw_output, expected_fieldset_output_with_styled_today_button)
   end
 
   test 'fieldset with error_class and message' do
@@ -103,172 +103,139 @@ class GovUkDateFieldsTest < ActiveSupport::TestCase
 
   def expected_fieldset_output_with_error_class_and_message
     %Q{
-      <div class="form-group gov_uk_date form-group-error" id="employee_date_joined">
-        <fieldset>
-          <legend>
-            <span class="form-label-bold">Joining date</span>
-            <span class="form-hint" id="employee_date_joined-hint">
-              For example, 31 3 1980
-            </span>
-            <ul>
-              <li><span class="error-message">Invalid joining date</span></li>
-              <li><span class="error-message">Joining date must be in the past</span></li>
+      <div class="govuk-form-group govuk-form-group--error">
+         <fieldset class="govuk-fieldset" ariadescribedby="employee_date_joined-hint employee_date_joined-error" role="group">
+            <legend class="govuk-fieldset__legend"><span class="govuk-label">Joining date</span></legend>
+            <span class="govuk-hint" id="employee_date_joined-hint employee_date_joined-error">For example, 31 3 1980</span>
+            <ul class="govuk-list">
+               <li><span class="govuk-error-message">Invalid joining date</span></li>
+               <li><span class="govuk-error-message">Joining date must be in the past</span></li>
             </ul>
-          </legend>
-          <div class="form-date">
-            <div class="form-group form-group-day">
-              <label for="employee_joined_dd">Day</label>
-              <input class="form-control form-control-error" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1">
+            <div class="govuk-date-input" id="employee_date_joined">
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2 govuk-input--error" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint employee_date_joined-error" value="1"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_joined_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2 govuk-input--error" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4 govuk-input--error" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-              <label for="employee_joined_mm">Month</label>
-              <input class="form-control form-control-error" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4">
-            </div>
-            <div class="form-group form-group-year">
-              <label for="employee_joined_yyyy">Year</label>
-              <input class="form-control form-control-error" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
 
   def expected_fieldset_output_with_id
     %Q{
-      <div class="form-group gov_uk_date" id="employee_date_joined">
-        <fieldset>
-          <legend>
-            <span class="form-label-bold">Joining date</span>
-            <span class="form-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
-          </legend>
-          <div class="form-date">
-            <div class="form-group form-group-day">
-              <label for="employee_joined_dd">Day</label>
-              <input class="form-control" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1">
+      <div class="govuk-form-group">
+         <fieldset class="govuk-fieldset" ariadescribedby="employee_date_joined-hint" role="group">
+            <legend class="govuk-fieldset__legend"><span class="govuk-label">Joining date</span></legend>
+            <span class="govuk-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
+            <div class="govuk-date-input" id="employee_date_joined">
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_joined_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-              <label for="employee_joined_mm">Month</label>
-              <input class="form-control" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4">
-            </div>
-            <div class="form-group form-group-year">
-              <label for="employee_joined_yyyy">Year</label>
-              <input class="form-control" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
 
   def expected_fieldset_output_with_form_hint
     %Q{
-      <div class="form-group gov_uk_date">
-        <fieldset>
-          <legend class="govuk_legend_class">
-            <span class="form-label-bold">Date of birth</span>
-            <span class="form-hint" id="dob-hint">In the form: dd mm yyyy</span>
-          </legend>
-          <div class="form-date">
-            <div class="form-group form-group-day">
-              <label for="employee_dob_dd">Day</label>
-              <input class="form-control" id="employee_dob_dd" name="employee[dob_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="dob-hint" value="7">
+      <div class="govuk-form-group">
+         <fieldset class="govuk-fieldset" ariadescribedby="dob-hint" role="group">
+            <legend class="govuk-fieldset__legend govuk_legend_class"><span class="govuk-label">Date of birth</span></legend>
+            <span class="govuk-hint" id="dob-hint">In the form: dd mm yyyy</span>
+            <div class="govuk-date-input">
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_dob_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_dob_dd" name="employee[dob_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="dob-hint" value="7"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_dob_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_dob_mm" name="employee[dob_mm]" type="number" pattern="\\d*" min="0" max="12" value="12"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_dob_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4" id="employee_dob_yyyy" name="employee[dob_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="1963"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-              <label for="employee_dob_mm">Month</label>
-              <input class="form-control" id="employee_dob_mm" name="employee[dob_mm]" type="number" pattern="\\d*" min="0" max="12" value="12">
-            </div>
-            <div class="form-group form-group-year">
-              <label for="employee_dob_yyyy">Year</label>
-              <input class="form-control" id="employee_dob_yyyy" name="employee[dob_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="1963">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
 
   def expected_fieldset_output_with_legend_class
     %Q{
-      <div class="form-group gov_uk_date">
-        <fieldset>
-          <legend class="date-legend-class">
-            <span class="form-label-bold">Joining date</span>
-            <span class="form-hint" id="joined-hint">For example, 31 3 1980</span>
-          </legend>
-          <div class="form-date">
-            <div class="form-group form-group-day">
-              <label for="employee_joined_dd">Day</label>
-              <input class="form-control" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="joined-hint" value="1">
+      <div class="govuk-form-group">
+         <fieldset class="govuk-fieldset" ariadescribedby="joined-hint" role="group">
+            <legend class="govuk-fieldset__legend date-legend-class"><span class="govuk-label">Joining date</span></legend>
+            <span class="govuk-hint" id="joined-hint">For example, 31 3 1980</span>
+            <div class="govuk-date-input">
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="joined-hint" value="1"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_joined_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-              <label for="employee_joined_mm">Month</label>
-              <input class="form-control" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4">
-            </div>
-            <div class="form-group form-group-year">
-              <label for="employee_joined_yyyy">Year</label>
-              <input class="form-control" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
 
   def expected_fieldset_output_with_unstyled_today_button
     %Q{
-      <div class="form-group gov_uk_date" id="employee_date_joined">
-        <fieldset>
-          <legend>
-            <span class="form-label-bold">Joining date</span>
-            <span class="form-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
-          </legend>
-          <div class="form-date">
-            <a class="button" role="button" href="#">Today</a>
-            <div class="form-group form-group-day">
-                <label for="employee_joined_dd">Day</label>
-                <input class="form-control" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1">
+      <div class="govuk-form-group">
+         <fieldset class="govuk-fieldset" ariadescribedby="employee_date_joined-hint" role="group">
+            <legend class="govuk-fieldset__legend"><span class="govuk-label">Joining date</span></legend>
+            <span class="govuk-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
+            <div class="govuk-date-input" id="employee_date_joined">
+               <a class="button" role="button" href="#">Today</a>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_joined_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-                <label for="employee_joined_mm">Month</label>
-                <input class="form-control" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4">
-            </div>
-            <div class="form-group form-group-year">
-                <label for="employee_joined_yyyy">Year</label>
-                <input class="form-control" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
 
-  def expected_fieldset_output_with_syled_today_button
+  def expected_fieldset_output_with_styled_today_button
     %Q{
-      <div class="form-group gov_uk_date" id="employee_date_joined">
-        <fieldset>
-          <legend>
-            <span class="form-label-bold">Joining date</span>
-            <span class="form-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
-          </legend>
-          <div class="form-date">
-            <a class="today-button-class" role="button" href="#">Today</a>
-            <div class="form-group form-group-day">
-                <label for="employee_joined_dd">Day</label>
-                <input class="form-control" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1">
+      <div class="govuk-form-group">
+         <fieldset class="govuk-fieldset" ariadescribedby="employee_date_joined-hint" role="group">
+            <legend class="govuk-fieldset__legend"><span class="govuk-label">Joining date</span></legend>
+            <span class="govuk-hint" id="employee_date_joined-hint">For example, 31 3 1980</span>
+            <div class="govuk-date-input" id="employee_date_joined">
+               <a class="today-button-class" role="button" href="#">Today</a>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_dd">Day</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_dd" name="employee[joined_dd]" type="number" pattern="\\d*" min="0" max="31" aria-describedby="employee_date_joined-hint" value="1"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label for="employee_joined_mm">Month</label><input class="govuk-input govuk-date-input__input govuk-input--width-2" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4"></div>
+               </div>
+               <div class="govuk-date-input__item">
+                  <div class="govuk-form-group"><label class="govuk-label govuk-date-input__label" for="employee_joined_yyyy">Year</label><input class="govuk-input govuk-date-input__input govuk-input--width-4" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015"></div>
+               </div>
             </div>
-            <div class="form-group form-group-month">
-                <label for="employee_joined_mm">Month</label>
-                <input class="form-control" id="employee_joined_mm" name="employee[joined_mm]" type="number" pattern="\\d*" min="0" max="12" value="4">
-            </div>
-            <div class="form-group form-group-year">
-                <label for="employee_joined_yyyy">Year</label>
-                <input class="form-control" id="employee_joined_yyyy" name="employee[joined_yyyy]" type="number" pattern="\\d*" min="0" max="2100" value="2015">
-            </div>
-          </div>
-        </fieldset>
+         </fieldset>
       </div>
     }
   end
-
 end
